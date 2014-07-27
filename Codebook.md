@@ -2,7 +2,7 @@
 
 This is a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data.
 
-### The data source
+### The Data Source
 
 * Original data: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 * Original description of the dataset: http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
@@ -13,7 +13,7 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 
 The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
 
-### The data
+### The Data
 
 The dataset includes the following files:
 
@@ -44,15 +44,39 @@ The following files are available for the train and test data. Their description
 - 'train/Inertial Signals/body_gyro_x_train.txt': The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second.
 Fields
 
-### Extracted tidy set fields:
+### Transformation Details
+
+1. Merges the training and the test sets to create one data set.
+2. Extracts only the measurements on the mean and standard deviation for each measurement.
+3. Uses descriptive activity names to name the activities in the data set
+4. Appropriately labels the data set with descriptive activity names.
+5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+### How ```run_analysis.R``` Implements the Above Steps:
+
+1. Load the test and training data.
+2. Load the test and training subject data.
+3. Load the test and training activity data.
+4. Load the activity labels.
+5. Combine the suject and activity data into the measurements data.
+6. Merge the test and training data into wholeset.
+7. Merge the activity labels data into the set, delete the activity number code column, keep the descriptive activity names column.
+8. Load the features data.
+9. Add the names "activity" and "subject" into features.
+10. Name the columns of the dataset with the features names.
+11. Get the variable names of only the measurements on the mean and standard deviation for each measurement.
+12. load the reshape2 library, melt the dataset by ID of "activity" and "subject" and measurements on the mean and standard deviation.
+13. Cast the data with the mean of each variable for each activity and subject.
+14. save the tidyset.txt into the "UCI HAR Dataset" directory.
+
+### Extracted Tidy Set Fields:
 
 ####ID
 * `subject` - The participant ("subject") ID
 * `activity` - The label of the activity performed when the corresponding measurements were taken
 
 ####Feature Fields
-
-* `tBodyAcc-mean()-X` 
+* `tBodyAcc-mean()-X`
 * `tBodyAcc-mean()-Y` 
 * `tBodyAcc-mean()-Z` 
 * `tBodyAcc-std()-X` 
@@ -119,20 +143,3 @@ Fields
 * `fBodyBodyGyroJerkMag-mean()` 
 * `fBodyBodyGyroJerkMag-std()` 
 
-### Transformation details
-
-There are 5 parts:
-
-1. Merges the training and the test sets to create one data set.
-2. Extracts only the measurements on the mean and standard deviation for each measurement.
-3. Uses descriptive activity names to name the activities in the data set
-4. Appropriately labels the data set with descriptive activity names.
-5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-
-### How ```run_analysis.R``` implements the above steps:
-
-* Load both test and train data
-* Load the features and activity labels.
-* Extract the mean and standard deviation column names and data.
-* Process the data. There are two parts processing test and train data respectively.
-* Merge data set.
